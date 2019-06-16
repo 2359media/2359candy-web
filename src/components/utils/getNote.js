@@ -1,4 +1,4 @@
-async function request(url) {
+async function request(url,id) {
   const res = await fetch(url,{
     method:'GET',
     headers:{
@@ -22,7 +22,7 @@ async function request(url) {
           const data = await response.json();
             localStorage.setItem('idToken', data.id_token)
             localStorage.setItem('refreshToken',data.refresh_token)
-            return request(url)       }
+            return request(url,id)       }
         }
     else if (res.status === 200){
       return res.json()

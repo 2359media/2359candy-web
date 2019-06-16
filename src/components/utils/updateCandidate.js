@@ -1,9 +1,22 @@
-async function request(url) {
-  const res = await fetch(url,{
-    method:'GET',
+async function updateCandidate(candidate,id) {
+  const res = await fetch(`https://candy-243011.firebaseapp.com/api/v1/candidates/${id}`,{
+    method:'PUT',
     headers:{
+      'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization' : `Bearer ${localStorage.getItem('idToken')}`
-    }
+    },
+    body: new URLSearchParams({
+     name: candidate.name,
+     email: candidate.email,
+     contactNumber: candidate.contactNumber,
+     office: candidate.office,
+     posting: candidate.posting,
+     source: candidate.source,
+     currentSalary: candidate.currentSalary,
+     expectedSalary: candidate.expectedSalary,
+     resumeUrl: candidate.resumeUrl,
+     status: candidate.status,
+    })
   })
     if(res.status === 403){
      const response = await fetch(
@@ -22,11 +35,8 @@ async function request(url) {
           const data = await response.json();
             localStorage.setItem('idToken', data.id_token)
             localStorage.setItem('refreshToken',data.refresh_token)
-            return request(url)       }
+            return updateCandidate(candidate,id)       }
         }
-    else if (res.status === 200){
-      return res.json()
-    } 
   
 }
-export default request
+export default updateCandidate;

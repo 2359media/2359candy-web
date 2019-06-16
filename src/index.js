@@ -10,7 +10,7 @@ import CandidateScreen from './components/CandidateScreen'
 ReactDOM.render( <Router history={history}>
   <div>
     <Route exact={true} path="/" component={Login} />
-    <Route path="/dashboard" component={CandidateScreen} />
+    <Route path="/dashboard/:id?" component={CandidateScreen} />
   </div>
 </Router>, document.getElementById('root'));
 

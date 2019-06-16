@@ -31,12 +31,12 @@ function Login() {
     )
       .then(res => {
         if (res.status !== 200) {
-          console.log('error')
         }
         else {
           res.json().then(data=>{
            localStorage.setItem('idToken', data.idToken)
            localStorage.setItem('refreshToken',data.refreshToken)
+           localStorage.setItem('email',data.email)
           })
        
         history.push(`/dashboard`);

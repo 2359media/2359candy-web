@@ -1,5 +1,5 @@
-async function request(url) {
-  const res = await fetch(url,{
+async function filterCandidate(queries) {
+  const res = await fetch(`https://candy-243011.firebaseapp.com/api/v1/candidates/${queries}`,{
     method:'GET',
     headers:{
       'Authorization' : `Bearer ${localStorage.getItem('idToken')}`
@@ -22,11 +22,11 @@ async function request(url) {
           const data = await response.json();
             localStorage.setItem('idToken', data.id_token)
             localStorage.setItem('refreshToken',data.refresh_token)
-            return request(url)       }
+            return filterCandidate(`https://candy-243011.firebaseapp.com/api/v1/candidates/${queries}`)       }
         }
     else if (res.status === 200){
       return res.json()
     } 
   
 }
-export default request
+export default filterCandidate;
