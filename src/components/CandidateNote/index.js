@@ -9,6 +9,7 @@ function CandidateNote(props) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [notes, setNotes] =useState('');
+  const [submit,setSubmit]= useState(false)
   const id = props.match.params.id
   const urlGetNote = `https://candy-243011.firebaseapp.com/api/v1/candidates/${id}/notes`
 
@@ -20,7 +21,8 @@ function CandidateNote(props) {
       setNotes(arrNotes)  
     }
     fetchData();
-  },[id]);
+    setSubmit(false)
+  },[id,submit]);
  
   function onChangeNote(e) {
     setTitle(e.target.value);
@@ -38,6 +40,8 @@ function CandidateNote(props) {
     createNote(title,content,localStorage.getItem('email'),id);
     setTitle('');
     setContent('');
+    setSubmit(true)
+    
   }
   return (
     <div className="candidate-note">

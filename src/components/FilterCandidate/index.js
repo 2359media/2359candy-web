@@ -92,6 +92,7 @@ function FilterCandidate(props) {
     else{
       const value = e.target.value;
       setQueries((prevState) => ({...prevState, [name]: value}))
+      history.push(`/dashboard`)
     }
   }
   return (
