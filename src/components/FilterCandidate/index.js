@@ -12,9 +12,8 @@ function FilterCandidate(props) {
   const [candidateActive, setCandidateActive] = useState(false);
   const [queries, setQueries] = useState({status:'Inbox'})
   const urlJobPosting = 'https://candy-243011.firebaseapp.com/api/v1/postings/';
-  const urlCandidate='https://candy-243011.firebaseapp.com/api/v1/candidates/'
+  const urlCandidate='https://candy-243011.firebaseapp.com/api/v1/candidates/';
   const id = props.match.params.id;
-
   useEffect(() => {
     async function fetchData() {
       const dataJob = await request(urlJobPosting);
@@ -23,14 +22,7 @@ function FilterCandidate(props) {
       setJobPost(arrayJob);
     }
     fetchData();
-    const currentId = candidates.findIndex(candidate=> candidate.id === props.candidate.id)
-    setCandidates([
-      ...candidates.slice(0,currentId),
-      props.candidate,
-      ...candidates.slice(currentId+1)
-    ])
-  }, [props.candidate
-  ]);
+  }, []);
   useEffect(()=>{
     async function fetchData(query) {
       const dataCandi = await request(`${urlCandidate}?${query}`);
@@ -42,28 +34,65 @@ function FilterCandidate(props) {
       setArrId(arrId);
     }
     let query=''
-    if(queries.office&&queries.posting){  query = `status=${queries.status}&office=${queries.office}&posting=${queries.posting}`}
-    else if(queries.office&&!queries.posting){ query = `status=${queries.status}&office=${queries.office}`}
-    else if (!queries.office&&queries.posting){ query = `status=${queries.status}&posting=${queries.posting}`}
-    else {query=`status=${queries.status}`}
+     for (var key in queries){
+       if(queries.key!==''){query+=`${key}=${queries[key]}&`}
+         
+     }
+     if(props.newCandidate){
+          setCandidateActive(props.newCandidate)
+          setAddNew(false)
+          history.push(`/dashboard/${props.newCandidate}`)
+          setCandidates([...candidates,props.candidate])
+
+     }
+    // if(props.candidate.id){
+    //   const currentId = candidates.findIndex(candidate=> candidate.id === props.candidate.id)
+    //   setCandidates([
+    //     ...candidates.slice(0,currentId),
+    //     props.candidate,
+    //     ...candidates.slice(currentId+1)
+    //   ])
+    //   setCandidateActive(props.candidate.id)
+    //   setAddNew(false)
+    //   history.push(`/dashboard/${props.candidate.id}`)
+    // }
+    setCandidateActive(id)
+   
     fetchData(query);
-  },[queries]);
+  },[queries,props.submitted,props.newCandidate]);
 
   function handleCandidate(id){
-   history.push(`/dashboard/${id}`)
-   const currentCandidate = arrId.find(idCandi=> idCandi===id)
-   setCandidateActive(currentCandidate)  
-   setAddNew(false)
+    if(props.changeInput){
+      props.setModalIsOpen(true)
+    }
+    else {
+      history.push(`/dashboard/${id}`)
+      const currentCandidate = arrId.find(idCandi=> idCandi===id)
+      setCandidateActive(currentCandidate)  
+      setAddNew(false)
+    }
+
   }
   function addCandidate(){
+    if(props.changeInput){
+      props.setModalIsOpen(true)
+    }
+    else {
     setAddNew(true)
     setCandidateActive('')
     history.push(`/dashboard`)
+    }
+    
+
   }
   function onChangeQueries(e,name){
-    const value = e.target.value;
-    setQueries((prevState) => ({...prevState, [name]: value}))
-
+    if(props.changeInput){
+      props.setModalIsOpen(true)
+    }
+    else{
+      const value = e.target.value;
+      setQueries((prevState) => ({...prevState, [name]: value}))
+    }
   }
   return (
     <div className="filter">
@@ -89,6 +118,7 @@ function FilterCandidate(props) {
         <option value="" disabled selected>
           Job Posting
         </option>
+        <option value="">All</option>
         {jobPost.map(job => (
           <option value={job.id}>{job.jobTitle}</option>
         ))}
@@ -101,14 +131,15 @@ function FilterCandidate(props) {
         <option value="" disabled selected>
           Office
         </option>
+        <option value="">All</option>
         <option value="SG">Singapore</option>
         <option value="VN">Vietnam</option>
-        <option value="Indo">Indonesia</option>
+        <option value="ID">Indonesia</option>
       </select>
       <div className="candidate-wrapper">
         <div className="candidate-title">
           <div className="basic-text">{candidates.length} Candidates</div>
-          <button onClick={()=>addCandidate()} className="plus-btn">+</button>
+         {queries.status==='Inbox'&& <button onClick={()=>addCandidate()} className="plus-btn">+</button>}
         </div>
         {addNew && 
         <div className="candidate-item-active" >

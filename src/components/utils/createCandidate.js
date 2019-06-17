@@ -15,7 +15,11 @@ async function createCandidate(
         contactNumber: candidate.contactNumber,
         office: candidate.office,
         posting: candidate.posting,
-        source: candidate.source
+        source: candidate.source,
+        currentSalary: candidate.currentSalary,
+        expectedSalary: candidate.expectedSalary,
+        resumeUrl: candidate.resumeUrl,
+        status: candidate.status,
       })
     }
   );
@@ -36,10 +40,11 @@ async function createCandidate(
       const data = await response.json();
       localStorage.setItem('idToken', data.id_token);
       localStorage.setItem('refreshToken', data.refresh_token);
-      return createCandidate(
-       candidate
-      );
+      return createCandidate(candidate);      
     }
+  }
+  if(res.status===200){
+    return res.json();
   }
 }
 export default createCandidate;

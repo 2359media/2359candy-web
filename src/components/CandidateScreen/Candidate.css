@@ -43,7 +43,7 @@
   width: 300px;
   outline: none;
   border-radius: 0;
-  color:#bfc5d2;
+  color:#2e384d;
   font-size: 15px;
   box-shadow: none;
 
@@ -115,6 +115,13 @@
   font-size: 15px;
   font-weight: bold;
   margin: 10px 10px 0 0;
+  outline: none;
+  cursor: pointer;
+}
+.update-btn{
+  width: 430px;
+  margin: 10px 10px 10px 0;
+
 }
 .yellow-btn{
   width: 210px;
@@ -126,6 +133,8 @@
   font-size: 15px;
   font-weight: bold;
   margin: 10px 0;
+  outline: none;
+  cursor: pointer;
 }
 .rectangle-wrapper{
   width: 430px;
@@ -195,9 +204,9 @@
   font-size: 16px;
   cursor: pointer;
   margin:4px 0 0 auto;
+  outline: none;
 }
 .new-note-wrapper{
-  width: 430px;
   min-height: 178px;
   background: white;
   margin: 10px 50px;
@@ -224,8 +233,7 @@
   background: transparent;
   padding:5px 0;
   color: #b9c1ce;
-  width: 400px;
-  margin-left: 28px;
+  width: 100%;
   min-height: 80px;
   
 }
@@ -234,13 +242,13 @@
   border: 0;
   outline: 0;
   background: transparent;
-  width: 375px;
   margin-left: 28px;
   border-bottom: solid 1px #e4e4e4;
   font-weight: 500;
   color: #b9c1ce;
   padding: 14px 0 5px 0;
   margin:0 28px;
+  width: 100%;
 }
 ::placeholder {
   color:#b9c1ce;
@@ -256,10 +264,10 @@
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
+  outline: none;
 
 }
 .note-wrapper{
-  width: 430px;
   min-height: 220px;
   background: white;
   margin: 30px 50px;
@@ -280,7 +288,8 @@
 }
 .author{
   display: flex;
-  margin: 100px 30px 20px 30px;
+  margin: 100px 20px 20px 20px;
+  justify-content: space-between;
 }
 .author-name{
   font-size: 15px;
@@ -305,3 +314,41 @@
   margin: 0 50px 30px 0;
   float: right;
 }
+
+  .btn {
+    position: static !important;
+    right: 0;
+  }
+  .modal-custom {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgb(204, 204, 204);
+    padding: 20px;
+    background: rgb(255, 255, 255);
+    height: 80px;
+    width: 430px;
+    outline: none;
+  }
+  .btn-wrapper{
+    display: flex;
+    justify-content: space-around;
+  
+  }
+  .btn-modal {
+    width: 180px;
+    height: 30px;
+    background: #2f5afc;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    margin: 30px 0 10px 0;
+  }

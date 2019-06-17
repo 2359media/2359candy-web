@@ -4,10 +4,10 @@ import request from '../utils/request';
 import createCandidate from '../utils/createCandidate';
 import updateCandidate from '../utils/updateCandidate';
 import { withRouter } from 'react-router-dom';
+import Modal from 'react-modal';
 function CandidateList(props) {
-  const [jobTitle, setJobTitle] = useState('');
-  const [office, setOffice] = useState('');
   const [jobPost, setJobPost] = useState([]);
+  const [clearChange,setClearChange] = useState(false)
   const id = props.match.params.id;
   const urlGetCandidate = `https://candy-243011.firebaseapp.com/api/v1/candidates/${id}`;
   const urlJobPosting = 'https://candy-243011.firebaseapp.com/api/v1/postings/';
@@ -21,6 +21,7 @@ function CandidateList(props) {
     id && fetchData();
     !id &&
       props.setCandidate({
+        status:'Inbox',
         name: '',
         email: '',
         contactNumber: '',
@@ -31,7 +32,7 @@ function CandidateList(props) {
         expectedSalary: '',
         resumeUrl: ''
       });
-  }, [id]);
+  }, [id,clearChange]);
 
   useEffect(() => {
     async function fetchData() {
@@ -46,30 +47,42 @@ function CandidateList(props) {
   function onChangeCandidate(e, name) {
     const value = e.target.value;
     props.setCandidate(prevState => ({ ...prevState, [name]: value }));
+    props.setChangeInput(true)
   }
   function onChangeStatus(value){ 
     props.setCandidate(prevState=>({...prevState, 'status': value}))
-    updateCandidate({...props.candidate,'status': value},id)
+    // updateCandidate({...props.candidate,'status': value},id)
   }
   function onChangeSelect(e,name){
     const value = e.target.value
     props.setCandidate(prevState => ({ ...prevState, [name]: value }));
-    updateCandidate({...props.candidate,[name]: value},id)
+    // updateCandidate({...props.candidate,[name]: value},id)
   }
 
   function submitCandidate(e) {
     id && updateCandidate(props.candidate, id);
+    props.setChangeInput(false);
+    props.setSubmitted(true);
   }
-  function createCandidate(e) {
-    createCandidate(props.candidate);
+  async function createNewCandidate(e) {
+    const idNewCandidate = await createCandidate(props.candidate);
+    props.setCandidate(prevState => ({ ...prevState, 'id': idNewCandidate.id }))
+    props.setNewCandidate(idNewCandidate.id)
+    props.setSubmitted(true);
   }
-console.log(jobPost,'post')
+  function clearModal(){
+    setClearChange(true);
+    props.setModalIsOpen(false)
+    props.setChangeInput(false)
+  }
+
   if (!props.candidate) return null;
   else
     return (
       <div className="candidate-list">
         <div className="action-wrapper">
           <div className="basic-text">Actions</div>
+          <button className="blue-btn update-btn" onClick={()=>submitCandidate()}>Save Updates To Candidate Profile/Application</button>
           {props.candidate.status === 'Inbox' && (
             <div>
               <button onClick={()=>onChangeStatus('Screening')}className="blue-btn">Ready for screening</button>
@@ -102,7 +115,7 @@ console.log(jobPost,'post')
               type="text"
               className="item-text"
               onChange={e => onChangeCandidate(e, 'name')}
-              onBlur={e => submitCandidate(e)}
+              // onBlur={e => submitCandidate(e)}
               value={props.candidate.name}
             />
             <div className="title-text-grey">EMAIL</div>
@@ -110,7 +123,7 @@ console.log(jobPost,'post')
               type="text"
               className="item-text"
               onChange={e => onChangeCandidate(e, 'email')}
-              onBlur={e => submitCandidate(e)}
+              // onBlur={e => submitCandidate(e)}
               value={props.candidate.email}
             />
             <div className="title-text-grey">CONTACT NUMBER</div>
@@ -118,7 +131,7 @@ console.log(jobPost,'post')
               type="text"
               className="item-text"
               onChange={e => onChangeCandidate(e, 'contactNumber')}
-              onBlur={e => submitCandidate(e)}
+              // onBlur={e => submitCandidate(e)}
               value={props.candidate.contactNumber}
             />
           </div>
@@ -129,7 +142,7 @@ console.log(jobPost,'post')
                 type="text"
                 className="item-text"
                 onChange={e => onChangeCandidate(e, 'resumeUrl')}
-                onBlur={e => submitCandidate(e)}
+                // onBlur={e => submitCandidate(e)}
                 value={props.candidate.resumeUrl}
               />
               <div className="title-text-grey">SOURCE</div>
@@ -137,14 +150,9 @@ console.log(jobPost,'post')
                 type="text"
                 className="item-text"
                 onChange={e => onChangeCandidate(e, 'source')}
-                onBlur={e => submitCandidate(e)}
+                // onBlur={e => submitCandidate(e)}
                 value={props.candidate.source}
               />
-              {/* <select className="application-filter-select">
-            <option value="" disabled selected>
-              candidate.source
-            </option>
-          </select> */}
               <div className="title-text-grey">JOB POSTING</div>
               <select
                 onChange={(e)=> onChangeSelect(e, 'posting')}
@@ -165,7 +173,7 @@ console.log(jobPost,'post')
                 <option value="" disabled selected />
                 <option value="SG">Singapore</option>
                 <option value="VN">Vietnam</option>
-                <option value="Indo">Indonesia</option>
+                <option value="ID">Indonesia</option>
               </select>
               <div className="title-text-grey">CURRENT SALARY</div>
               <input
@@ -187,10 +195,34 @@ console.log(jobPost,'post')
           </div>
         </div>
         {!id && (
-          <button className="create-btn" onClick={() => createCandidate()}>
+          <button className="create-btn" onClick={() => createNewCandidate()}>
             Create
           </button>
         )}
+
+         <Modal
+          className="modal-custom"
+          ariaHideApp={false}
+          isOpen={props.modalIsOpen}
+          onRequestClose={()=>props.setModalIsOpen(false)}
+        >
+          <div>Change are not saved, are you sure you want to continue?</div>
+          <div className="btn-wrapper">
+          <button
+            className="btn-modal"
+            type="submit" 
+            onClick={()=>props.setModalIsOpen(false)}
+          >
+            Cancel
+          </button>
+          <button
+            className="btn-modal"
+            onClick={()=> clearModal()}
+          >
+            Clear Changes
+          </button>
+          </div>
+        </Modal>
       </div>
     );
 }
