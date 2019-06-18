@@ -4,13 +4,16 @@ import CandidateList from '../CandidateList';
 import CandidateNote from '../CandidateNote';
 import './Candidate.css';
 import setting_icon from './assets/setting-icon.png';
+import loading from './assets/loading.gif'
 
 function CandidateScreen() {
-  const [candidate, setCandidate] = useState({});
+  const [candidate, setCandidate] = useState(null);
   const [changeInput, setChangeInput] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [submitted,setSubmitted] = useState(false);
-  const [newCandidate,setNewCandidate] = useState('')
+  const [newCandidate,setNewCandidate] = useState('');
+  const [showLoading, setShowLoading] = useState(true);
+  const [currentCandidate,setCurrentCandidate] = useState(null);
 
   return (
     <div className="candidate-screen">
@@ -27,17 +30,26 @@ function CandidateScreen() {
           submitted={submitted}
           newCandidate={newCandidate}
           candidate={candidate}
+          setCandidate={setCandidate}
+          setShowLoading={setShowLoading}
+          showLoading={showLoading}
+          currentCandidate={currentCandidate}
+          setSubmitted={setSubmitted}
         />
         <CandidateList
-          setCandidate={setCandidate}
           candidate={candidate}
           setChangeInput={setChangeInput}
           modalIsOpen={modalIsOpen}
           setModalIsOpen={setModalIsOpen}
           setSubmitted={setSubmitted}
           setNewCandidate={setNewCandidate}
+          showLoading={showLoading}
+          setCurrentCandidate={setCurrentCandidate}
+          currentCandidate={currentCandidate}
         />
-        <CandidateNote />
+        <CandidateNote
+        showLoading={showLoading}
+         />
       </div>
     </div>
   );

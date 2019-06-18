@@ -3,24 +3,31 @@ import '../CandidateScreen/Candidate.css';
 import request from '../utils/request';
 import createCandidate from '../utils/createCandidate';
 import updateCandidate from '../utils/updateCandidate';
-import { withRouter } from 'react-router-dom';
+import { withRouter,Link } from 'react-router-dom';
+import resume from '../CandidateScreen/assets/resume.png'
 import Modal from 'react-modal';
 function CandidateList(props) {
   const [jobPost, setJobPost] = useState([]);
   const [clearChange,setClearChange] = useState(false)
   const id = props.match.params.id;
-  const urlGetCandidate = `https://candy-243011.firebaseapp.com/api/v1/candidates/${id}`;
+  // const [currentCandidate,setCurrentCandidate] = useState(null);
   const urlJobPosting = 'https://candy-243011.firebaseapp.com/api/v1/postings/';
+  const urlGetCandidate = `https://candy-243011.firebaseapp.com/api/v1/candidates/${id}`;
+
   useEffect(() => {
-    async function fetchData() {
-      const data = await request(urlGetCandidate);
-      if (data) {
-        props.setCandidate(data);
+    if(!props.candidate){
+      async function fetchData() {
+        const data = await request(urlGetCandidate);
+        if (data) {
+
+          props.setCurrentCandidate(data);
+        }
       }
+      id && fetchData();
     }
-    id && fetchData();
+    props.setCurrentCandidate(props.candidate)
     !id &&
-      props.setCandidate({
+      props.setCurrentCandidate({
         status:'Inbox',
         name: '',
         email: '',
@@ -32,7 +39,7 @@ function CandidateList(props) {
         expectedSalary: '',
         resumeUrl: ''
       });
-  }, [id,clearChange]);
+  }, [id,clearChange,props.candidate]);
 
   useEffect(() => {
     async function fetchData() {
@@ -46,28 +53,29 @@ function CandidateList(props) {
 
   function onChangeCandidate(e, name) {
     const value = e.target.value;
-    props.setCandidate(prevState => ({ ...prevState, [name]: value }));
+    props.setCurrentCandidate(prevState => ({ ...prevState, [name]: value }));
     props.setChangeInput(true)
   }
   function onChangeStatus(value){ 
-    props.setCandidate(prevState=>({...prevState, 'status': value}))
-    // updateCandidate({...props.candidate,'status': value},id)
+    props.setCurrentCandidate(prevState=>({...prevState, 'status': value}))
+    updateCandidate({...props.candidate,'status': value},id)
   }
   function onChangeSelect(e,name){
     const value = e.target.value
-    props.setCandidate(prevState => ({ ...prevState, [name]: value }));
+    props.setCurrentCandidate(prevState => ({ ...prevState, [name]: value }));
     // updateCandidate({...props.candidate,[name]: value},id)
   }
 
   function submitCandidate(e) {
-    id && updateCandidate(props.candidate, id);
+    id && updateCandidate(props.currentCandidate, id);
     props.setChangeInput(false);
     props.setSubmitted(true);
   }
   async function createNewCandidate(e) {
-    const idNewCandidate = await createCandidate(props.candidate);
-    props.setCandidate(prevState => ({ ...prevState, 'id': idNewCandidate.id }))
+    const idNewCandidate = await createCandidate(props.currentCandidate);
+    props.setCurrentCandidate(prevState => ({ ...prevState, 'id': idNewCandidate.id }))
     props.setNewCandidate(idNewCandidate.id)
+    props.setChangeInput(false);
     props.setSubmitted(true);
   }
   function clearModal(){
@@ -75,33 +83,33 @@ function CandidateList(props) {
     props.setModalIsOpen(false)
     props.setChangeInput(false)
   }
-
-  if (!props.candidate) return null;
+  console.log(props.currentCandidate,'')
+  if (!props.currentCandidate||props.showLoading) return  <div className="candidate-list"></div>
   else
     return (
       <div className="candidate-list">
         <div className="action-wrapper">
           <div className="basic-text">Actions</div>
           <button className="blue-btn update-btn" onClick={()=>submitCandidate()}>Save Updates To Candidate Profile/Application</button>
-          {props.candidate.status === 'Inbox' && (
+          {props.currentCandidate.status === 'Inbox' && (
             <div>
               <button onClick={()=>onChangeStatus('Screening')}className="blue-btn">Ready for screening</button>
               <button onClick={()=>onChangeStatus('Rejected')} className="yellow-btn">Reject</button>
             </div>
           )}
-            {props.candidate.status === 'Screening' && (
+            {props.currentCandidate.status === 'Screening' && (
             <div>
               <button onClick={()=>onChangeStatus('Shortlisted')} className="blue-btn">Shortlist</button>
               <button onClick={()=>onChangeStatus('Rejected')} className="yellow-btn">Reject</button>
             </div>
           )}
-            {props.candidate.status === 'Shortlisted' && (
+            {props.currentCandidate.status === 'Shortlisted' && (
             <div>
               <button onClick={()=>onChangeStatus('Offered')} className="blue-btn">Offer</button>
               <button onClick={()=>onChangeStatus('Rejected')} className="yellow-btn">Reject</button>
             </div>
           )}
-            {(props.candidate.status === 'Offered' || props.candidate.status === 'rejected') && (
+            {(props.currentCandidate.status === 'Offered' || props.currentCandidate.status === 'rejected') && (
             <div>
               <button onClick={()=>onChangeStatus('Screening')} className="blue-btn">Re-screen</button>  
             </div>
@@ -116,7 +124,7 @@ function CandidateList(props) {
               className="item-text"
               onChange={e => onChangeCandidate(e, 'name')}
               // onBlur={e => submitCandidate(e)}
-              value={props.candidate.name}
+              value={props.currentCandidate.name||''}
             />
             <div className="title-text-grey">EMAIL</div>
             <input
@@ -124,7 +132,7 @@ function CandidateList(props) {
               className="item-text"
               onChange={e => onChangeCandidate(e, 'email')}
               // onBlur={e => submitCandidate(e)}
-              value={props.candidate.email}
+              value={props.currentCandidate.email||''}
             />
             <div className="title-text-grey">CONTACT NUMBER</div>
             <input
@@ -132,31 +140,37 @@ function CandidateList(props) {
               className="item-text"
               onChange={e => onChangeCandidate(e, 'contactNumber')}
               // onBlur={e => submitCandidate(e)}
-              value={props.candidate.contactNumber}
+              value={props.currentCandidate.contactNumber ||''}
             />
           </div>
           <div className="application-wrapper">
+          <div className="basic-text">Application</div>
             <div className="application-rectangle">
               <div className="title-text-grey">RESUME</div>
+              <div className="resume-wrapper">
               <input
                 type="text"
                 className="item-text"
                 onChange={e => onChangeCandidate(e, 'resumeUrl')}
                 // onBlur={e => submitCandidate(e)}
-                value={props.candidate.resumeUrl}
+                value={props.currentCandidate.resumeUrl || ''}
               />
+              <a href={props.currentCandidate.resumeUrl} target="_blank" rel="noopener noreferrer">
+                <img className="resume-icon" src={resume}  alt="resume"/>
+              </a>
+              </div>
               <div className="title-text-grey">SOURCE</div>
               <input
                 type="text"
                 className="item-text"
                 onChange={e => onChangeCandidate(e, 'source')}
                 // onBlur={e => submitCandidate(e)}
-                value={props.candidate.source}
+                value={props.currentCandidate.source||''}
               />
               <div className="title-text-grey">JOB POSTING</div>
               <select
                 onChange={(e)=> onChangeSelect(e, 'posting')}
-                value={props.candidate.posting}
+                value={props.currentCandidate.posting||''}
                 className="application-filter-select"
               >
                 <option value="" disabled selected />
@@ -167,7 +181,7 @@ function CandidateList(props) {
               <div className="title-text-grey">OFFICE</div>
               <select
                onChange={e => onChangeSelect(e, 'office')}
-                value={props.candidate.office}
+                value={props.currentCandidate.office||''}
                 className="application-filter-select"
               >
                 <option value="" disabled selected />
@@ -181,7 +195,7 @@ function CandidateList(props) {
                 className="item-text"
                 onChange={e => onChangeCandidate(e, 'currentSalary')}
                 onBlur={e => submitCandidate(e)}
-                value={props.candidate.currentSalary}
+                value={props.currentCandidate.currentSalary||''}
               />
               <div className="title-text-grey">EXPECTED SALARY</div>
               <input
@@ -189,7 +203,7 @@ function CandidateList(props) {
                 className="item-text"
                 onChange={e => onChangeCandidate(e, 'expectedSalary')}
                 onBlur={e => submitCandidate(e)}
-                value={props.candidate.expectedSalary}
+                value={props.currentCandidate.expectedSalary||''}
               />
             </div>
           </div>

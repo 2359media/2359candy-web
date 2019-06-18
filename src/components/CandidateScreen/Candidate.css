@@ -1,6 +1,6 @@
 .candidate-container{
   display: flex;
-  min-height: 100vh;
+  min-height: calc(100vh - 68px);
 
 }
 .header{
@@ -25,7 +25,7 @@
 .filter{
   width: 24%;
   padding: 0 20px;
-  height: 100vh;
+  height: calc(100vh - 68px);
   overflow: scroll;
  
 }
@@ -93,7 +93,7 @@
   width: 38%;
   background: #f4f6fc;
   overflow: scroll;
-  height: 100vh;
+  height: calc(100vh - 68px);
 
 }
 .action-wrapper,.profile-wrapper{
@@ -187,7 +187,7 @@
 .candidate-note{
   width: 38%;
   background: #f4f6fc;
-  height: 100vh;
+  height: calc(100vh - 68px);
   overflow: scroll;
 }
 .candidate-note-title{
@@ -211,6 +211,14 @@
   background: white;
   margin: 10px 50px;
 }
+.note-wrapper-loading{
+  background: #f4f6fc
+}
+.loading-note{
+  width: 100px;
+  height: 100px;
+  margin: 50px 0 0 200px;
+}
 .new-note-title-text{
   font-size: 15px;
   font-weight: 500;
@@ -232,10 +240,13 @@
   outline: 0;
   background: transparent;
   padding:5px 0;
-  color: #b9c1ce;
+  color: #2e384d;
   width: 100%;
   min-height: 80px;
   
+}
+::placeholder {
+  color:#b9c1ce;
 }
 .new-note-title-input{
   font-size: 15px;
@@ -245,7 +256,7 @@
   margin-left: 28px;
   border-bottom: solid 1px #e4e4e4;
   font-weight: 500;
-  color: #b9c1ce;
+  color: #2e384d;
   padding: 14px 0 5px 0;
   margin:0 28px;
   width: 100%;
@@ -285,6 +296,7 @@
   line-height: 1.47;
   color: #2e384d;
   margin: 10px 30px;
+  white-space: pre-line;
 }
 .author{
   display: flex;
@@ -351,4 +363,12 @@
     cursor: pointer;
     outline: none;
     margin: 30px 0 10px 0;
+  }
+  .loading{
+    width: 100px;
+    height: 100px;
+    margin: 50px 0 0 110px;
+  }
+  .resume-icon{
+    cursor: pointer;
   }

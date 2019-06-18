@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import '../CandidateScreen/Candidate.css';
 import request from '../utils/request';
-import filterCandidate from '../utils/filterCandidate';
 import history from '../history';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import loading from '../CandidateScreen/assets/loading.gif';
+import moment from 'moment';
 function FilterCandidate(props) {
-  const [candidates,setCandidates]=useState([]);
+  const [candidates, setCandidates] = useState(null);
   const [jobPost, setJobPost] = useState([]);
   const [arrId, setArrId] = useState([]);
-  const [addNew,setAddNew] = useState(false);
+  const [addNew, setAddNew] = useState(false);
   const [candidateActive, setCandidateActive] = useState(false);
-  const [queries, setQueries] = useState({status:'Inbox'})
+  const [queries, setQueries] = useState({ status: 'Inbox' });
   const urlJobPosting = 'https://candy-243011.firebaseapp.com/api/v1/postings/';
-  const urlCandidate='https://candy-243011.firebaseapp.com/api/v1/candidates/';
+  const urlCandidate =
+    'https://candy-243011.firebaseapp.com/api/v1/candidates/';
   const id = props.match.params.id;
   useEffect(() => {
     async function fetchData() {
@@ -23,85 +25,98 @@ function FilterCandidate(props) {
     }
     fetchData();
   }, []);
-  useEffect(()=>{
+  useEffect(() => {
+    props.setShowLoading(true);
     async function fetchData(query) {
       const dataCandi = await request(`${urlCandidate}?${query}`);
       const arrayCandi = [];
       const arrId = [];
-      dataCandi&&dataCandi.map(item => arrayCandi.push(item));
-      dataCandi&&dataCandi.map(item => arrId.push(item.id));
+      dataCandi && dataCandi.map(item => arrayCandi.push(item));
+      dataCandi && dataCandi.map(item => arrId.push(item.id));
       setCandidates(arrayCandi);
       setArrId(arrId);
+      props.setShowLoading(false);
     }
-    let query=''
-     for (var key in queries){
-       if(queries.key!==''){query+=`${key}=${queries[key]}&`}
-         
-     }
-     if(props.newCandidate){
-          setCandidateActive(props.newCandidate)
-          setAddNew(false)
-          history.push(`/dashboard/${props.newCandidate}`)
-          setCandidates([...candidates,props.candidate])
-
-     }
-    // if(props.candidate.id){
-    //   const currentId = candidates.findIndex(candidate=> candidate.id === props.candidate.id)
+    let query = '';
+    for (var key in queries) {
+      if (queries.key !== '') {
+        query += `${key}=${queries[key]}&`;
+      }
+    }
+    if (props.newCandidate) {
+      setCandidateActive(props.newCandidate);
+      setAddNew(false);
+      history.push(`/dashboard/${props.newCandidate}`);
+      setCandidates([...candidates, props.candidate]);
+    }
+    //  setTimeout(() => {
+    //   setShowLoading(false);
+    // }, 3000);
+    // if(props.currentCandidate){
+    //   const currentId = candidates.findIndex(candidate=> candidate.id === props.currentCandidate.id)
     //   setCandidates([
     //     ...candidates.slice(0,currentId),
-    //     props.candidate,
+    //     props.currentCandidate,
     //     ...candidates.slice(currentId+1)
     //   ])
-    //   setCandidateActive(props.candidate.id)
+    //   setCandidateActive(props.currentCandidate.id)
     //   setAddNew(false)
-    //   history.push(`/dashboard/${props.candidate.id}`)
     // }
-    setCandidateActive(id)
-   
+    // setCandidateActive(id);
+    props.setSubmitted(false)
     fetchData(query);
-  },[queries,props.submitted,props.newCandidate]);
+  }, [queries, props.submitted]);
 
-  function handleCandidate(id){
-    if(props.changeInput){
-      props.setModalIsOpen(true)
+  function handleCandidate(id) {
+    if (props.changeInput) {
+      props.setModalIsOpen(true);
+    } else {
+      history.push(`/dashboard/${id}`);
+      const currentCandidate = arrId.find(idCandi => idCandi === id);
+      setCandidateActive(currentCandidate);
+      setAddNew(false);
+      const currentCandidateSelect = candidates.find(
+        candidate => candidate.id === id
+      );
+      props.setCandidate(currentCandidateSelect);
     }
-    else {
-      history.push(`/dashboard/${id}`)
-      const currentCandidate = arrId.find(idCandi=> idCandi===id)
-      setCandidateActive(currentCandidate)  
-      setAddNew(false)
-    }
-
   }
-  function addCandidate(){
-    if(props.changeInput){
-      props.setModalIsOpen(true)
+  function addCandidate() {
+    if (props.changeInput) {
+      props.setModalIsOpen(true);
+    } else {
+      setAddNew(true);
+      setCandidateActive('');
+      history.push(`/dashboard`);
     }
-    else {
-    setAddNew(true)
-    setCandidateActive('')
-    history.push(`/dashboard`)
-    }
-    
-
   }
-  function onChangeQueries(e,name){
-    if(props.changeInput){
-      props.setModalIsOpen(true)
-    }
-    else{
+  function onChangeQueries(e, name) {
+    if (props.changeInput) {
+      props.setModalIsOpen(true);
+    } else {
       const value = e.target.value;
-      setQueries((prevState) => ({...prevState, [name]: value}))
-      history.push(`/dashboard`)
+      setQueries(prevState => ({ ...prevState, [name]: value }));
+      history.push(`/dashboard`);
     }
   }
+  function findJobTitle(posting){
+
+    const job = jobPost.find(job=>job.id === posting)
+    if(job) return job.jobTitle 
+    else return null
+  }
+  function toDateTime(secs) {
+    var t = new Date(0);
+    t.setSeconds(secs);
+    return t;
+  }
+
   return (
     <div className="filter">
       <div className="filter-text">FILTER BY</div>
-      <select className="filter-select"
-       onChange={value =>
-        onChangeQueries(value, 'status')
-      }
+      <select
+        className="filter-select"
+        onChange={value => onChangeQueries(value, 'status')}
       >
         <option className="option-text" defaultValue="Inbox">
           Inbox
@@ -111,10 +126,9 @@ function FilterCandidate(props) {
         <option value="Offered">Offered</option>
         <option value="Rejected">Rejected</option>
       </select>
-      <select className="filter-select"
-      onChange={value =>
-        onChangeQueries(value, 'posting')
-      }
+      <select
+        className="filter-select"
+        onChange={value => onChangeQueries(value, 'posting')}
       >
         <option value="" disabled selected>
           Job Posting
@@ -124,10 +138,9 @@ function FilterCandidate(props) {
           <option value={job.id}>{job.jobTitle}</option>
         ))}
       </select>
-      <select className="filter-select"
-      onChange={value =>
-        onChangeQueries(value, 'office')
-      }
+      <select
+        className="filter-select"
+        onChange={value => onChangeQueries(value, 'office')}
       >
         <option value="" disabled selected>
           Office
@@ -137,24 +150,46 @@ function FilterCandidate(props) {
         <option value="VN">Vietnam</option>
         <option value="ID">Indonesia</option>
       </select>
-      <div className="candidate-wrapper">
-        <div className="candidate-title">
-          <div className="basic-text">{candidates.length} Candidates</div>
-         {queries.status==='Inbox'&& <button onClick={()=>addCandidate()} className="plus-btn">+</button>}
+      {!candidates || props.showLoading ? (
+        <div className="candidate-wrapper">
+          <img className="loading" src={loading} alt="loading" />
         </div>
-        {addNew && 
-        <div className="candidate-item-active" >
-        <div className="candidate-name">Who is this?</div>
-        <div className="candidate-job"/></div>
-        }
-        {candidates.map(candidate=>(
-        <div className={candidateActive===candidate.id?"candidate-item-active":"candidate-item"} onClick={() =>handleCandidate(candidate.id)}>
-        <div className="candidate-name">{candidate.name}</div>
-        <div className="candidate-job">{candidate.email}</div>
-      </div>
-        ))}
-
-      </div>
+      ) : (
+        <div className="candidate-wrapper">
+          <div className="candidate-title">
+            <div className="basic-text">
+              {candidates ? candidates.length : '0'} Candidates
+            </div>
+            {queries.status === 'Inbox' && (
+              <button onClick={() => addCandidate()} className="plus-btn">
+                +
+              </button>
+            )}
+          </div>
+          {addNew && (
+            <div className="candidate-item-active">
+              <div className="candidate-name">Who is this?</div>
+              <div className="candidate-job" />
+            </div>
+          )}
+          {candidates &&
+            candidates.map(candidate => (
+              <div
+                className={
+                  candidateActive === candidate.id
+                    ? 'candidate-item-active'
+                    : 'candidate-item'
+                }
+                onClick={() => handleCandidate(candidate.id)}
+              >
+                <div className="candidate-name">{candidate.name}&nbsp;&nbsp;&nbsp;&nbsp;{moment(toDateTime(candidate.createdAt._seconds)).format(
+                      'DD-MM-YYYY'
+                    )}</div>
+               <div className="candidate-job">{findJobTitle(candidate.posting)}</div>
+              </div>
+            ))}
+        </div>
+      )}
     </div>
   );
 }
