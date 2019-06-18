@@ -3,7 +3,7 @@ import '../CandidateScreen/Candidate.css';
 import request from '../utils/request';
 import createCandidate from '../utils/createCandidate';
 import updateCandidate from '../utils/updateCandidate';
-import { withRouter,Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import resume from '../CandidateScreen/assets/resume.png'
 import Modal from 'react-modal';
 function CandidateList(props) {
@@ -84,7 +84,7 @@ function CandidateList(props) {
     props.setChangeInput(false)
   }
   console.log(props.currentCandidate,'')
-  if (!props.currentCandidate||props.showLoading) return  <div className="candidate-list"></div>
+  if (!props.currentCandidate||props.showLoading||(!id&&!props.addNew)) return  <div className="candidate-list"></div>
   else
     return (
       <div className="candidate-list">

@@ -9,7 +9,6 @@ function FilterCandidate(props) {
   const [candidates, setCandidates] = useState(null);
   const [jobPost, setJobPost] = useState([]);
   const [arrId, setArrId] = useState([]);
-  const [addNew, setAddNew] = useState(false);
   const [candidateActive, setCandidateActive] = useState(false);
   const [queries, setQueries] = useState({ status: 'Inbox' });
   const urlJobPosting = 'https://candy-243011.firebaseapp.com/api/v1/postings/';
@@ -45,7 +44,7 @@ function FilterCandidate(props) {
     }
     if (props.newCandidate) {
       setCandidateActive(props.newCandidate);
-      setAddNew(false);
+      props.setAddNew(false);
       history.push(`/dashboard/${props.newCandidate}`);
       setCandidates([...candidates, props.candidate]);
     }
@@ -74,7 +73,7 @@ function FilterCandidate(props) {
       history.push(`/dashboard/${id}`);
       const currentCandidate = arrId.find(idCandi => idCandi === id);
       setCandidateActive(currentCandidate);
-      setAddNew(false);
+      props.setAddNew(false);
       const currentCandidateSelect = candidates.find(
         candidate => candidate.id === id
       );
@@ -85,7 +84,7 @@ function FilterCandidate(props) {
     if (props.changeInput) {
       props.setModalIsOpen(true);
     } else {
-      setAddNew(true);
+      props.setAddNew(true);
       setCandidateActive('');
       history.push(`/dashboard`);
     }
@@ -166,7 +165,7 @@ function FilterCandidate(props) {
               </button>
             )}
           </div>
-          {addNew && (
+          {props.addNew && (
             <div className="candidate-item-active">
               <div className="candidate-name">Who is this?</div>
               <div className="candidate-job" />

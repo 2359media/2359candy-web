@@ -14,6 +14,7 @@ function CandidateScreen() {
   const [newCandidate,setNewCandidate] = useState('');
   const [showLoading, setShowLoading] = useState(true);
   const [currentCandidate,setCurrentCandidate] = useState(null);
+  const [addNew, setAddNew] = useState(false);
 
   return (
     <div className="candidate-screen">
@@ -35,6 +36,8 @@ function CandidateScreen() {
           showLoading={showLoading}
           currentCandidate={currentCandidate}
           setSubmitted={setSubmitted}
+          setAddNew={setAddNew}
+          addNew={addNew}
         />
         <CandidateList
           candidate={candidate}
@@ -46,9 +49,11 @@ function CandidateScreen() {
           showLoading={showLoading}
           setCurrentCandidate={setCurrentCandidate}
           currentCandidate={currentCandidate}
+          addNew={addNew}
         />
         <CandidateNote
         showLoading={showLoading}
+        addNew={addNew}
          />
       </div>
     </div>

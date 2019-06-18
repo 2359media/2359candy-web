@@ -46,7 +46,7 @@ function CandidateNote(props) {
     setContent('');
     setSubmit(true);
   }
-  if (!notes || props.showLoading) return <div className="candidate-note" />;
+  if (!notes || props.showLoading||(!id&&!props.addNew)) return <div className="candidate-note" />;
   else
     return (
       <div className="candidate-note">
