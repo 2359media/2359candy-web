@@ -58,7 +58,7 @@ function FilterCandidate(props) {
     //     props.currentCandidate,
     //     ...candidates.slice(currentId+1)
     //   ])
-    //   setCandidateActive(props.currentCandidate.id)
+      setCandidateActive(id)
     //   setAddNew(false)
     // }
     // setCandidateActive(id);
@@ -129,19 +129,19 @@ function FilterCandidate(props) {
         className="filter-select"
         onChange={value => onChangeQueries(value, 'posting')}
       >
-        <option value="" disabled selected>
+        <option defaultValue="" disabled selected>
           Job Posting
         </option>
         <option value="">All</option>
         {jobPost.map(job => (
-          <option value={job.id}>{job.jobTitle}</option>
+          <option key={job.id} value={job.id}>{job.jobTitle}</option>
         ))}
       </select>
       <select
         className="filter-select"
         onChange={value => onChangeQueries(value, 'office')}
       >
-        <option value="" disabled selected>
+        <option defaultValue="" disabled selected>
           Office
         </option>
         <option value="">All</option>
@@ -167,13 +167,14 @@ function FilterCandidate(props) {
           </div>
           {props.addNew && (
             <div className="candidate-item-active">
-              <div className="candidate-name">Who is this?</div>
+              <div className="candidate-name">New candidate</div>
               <div className="candidate-job" />
             </div>
           )}
           {candidates &&
             candidates.map(candidate => (
-              <div
+              <div 
+                key={candidate.id}
                 className={
                   candidateActive === candidate.id
                     ? 'candidate-item-active'

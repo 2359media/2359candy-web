@@ -142,8 +142,67 @@ function CandidateList(props) {
               // onBlur={e => submitCandidate(e)}
               value={props.currentCandidate.contactNumber ||''}
             />
+     
+              <div className="title-text-grey">RESUME</div>
+              <div className="resume-wrapper">
+              <input
+                type="text"
+                className="item-text"
+                onChange={e => onChangeCandidate(e, 'resumeUrl')}
+                // onBlur={e => submitCandidate(e)}
+                value={props.currentCandidate.resumeUrl || ''}
+              />
+              <a href={props.currentCandidate.resumeUrl} target="_blank" rel="noopener noreferrer">
+                <img className="resume-icon" src={resume}  alt="resume"/>
+              </a>
+              </div>
+              <div className="title-text-grey">SOURCE</div>
+              <input
+                type="text"
+                className="item-text"
+                onChange={e => onChangeCandidate(e, 'source')}
+                // onBlur={e => submitCandidate(e)}
+                value={props.currentCandidate.source||''}
+              />
+              <div className="title-text-grey">JOB POSTING</div>
+              <select
+                onChange={(e)=> onChangeSelect(e, 'posting')}
+                value={props.currentCandidate.posting||''}
+                className="application-filter-select"
+              >
+                <option value="" disabled selected />
+                {jobPost.map(job => (
+                  <option  key={job.id} value={job.id}>{job.jobTitle}</option>
+                ))}
+              </select>
+              <div className="title-text-grey">OFFICE</div>
+              <select
+               onChange={e => onChangeSelect(e, 'office')}
+                value={props.currentCandidate.office||''}
+                className="application-filter-select"
+              >
+                <option value="" disabled selected />
+                <option value="SG">Singapore</option>
+                <option value="VN">Vietnam</option>
+                <option value="ID">Indonesia</option>
+              </select>
+              <div className="title-text-grey">CURRENT SALARY</div>
+              <input
+                type="text"
+                className="item-text"
+                onChange={e => onChangeCandidate(e, 'currentSalary')}
+                value={props.currentCandidate.currentSalary||''}
+              />
+              <div className="title-text-grey">EXPECTED SALARY</div>
+              <input
+                type="text"
+                className="item-text mg-bt"
+                onChange={e => onChangeCandidate(e, 'expectedSalary')}           
+                value={props.currentCandidate.expectedSalary||''}
+              />
+            
           </div>
-          <div className="application-wrapper">
+          {/* <div className="application-wrapper">
           <div className="basic-text">Application</div>
             <div className="application-rectangle">
               <div className="title-text-grey">RESUME</div>
@@ -175,7 +234,7 @@ function CandidateList(props) {
               >
                 <option value="" disabled selected />
                 {jobPost.map(job => (
-                  <option value={job.id}>{job.jobTitle}</option>
+                  <option  key={job.id} value={job.id}>{job.jobTitle}</option>
                 ))}
               </select>
               <div className="title-text-grey">OFFICE</div>
@@ -206,7 +265,7 @@ function CandidateList(props) {
                 value={props.currentCandidate.expectedSalary||''}
               />
             </div>
-          </div>
+          </div> */}
         </div>
         {!id && (
           <button className="create-btn" onClick={() => createNewCandidate()}>
