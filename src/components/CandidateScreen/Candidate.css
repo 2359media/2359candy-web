@@ -119,9 +119,7 @@
   cursor: pointer;
 }
 .update-btn{
-  width: 430px;
-  margin: 10px 10px 10px 0;
-
+  margin: 0 0 10px auto;
 }
 .yellow-btn{
   width: 210px;
@@ -374,4 +372,7 @@
   }
   .mg-bt{
     margin-bottom: 50px;
+  }
+  .application-title-wrapper{
+    display:flex;
   }

@@ -4,7 +4,6 @@ import CandidateList from '../CandidateList';
 import CandidateNote from '../CandidateNote';
 import './Candidate.css';
 import setting_icon from './assets/setting-icon.png';
-import loading from './assets/loading.gif'
 
 function CandidateScreen() {
   const [candidate, setCandidate] = useState(null);
@@ -50,6 +49,7 @@ function CandidateScreen() {
           setCurrentCandidate={setCurrentCandidate}
           currentCandidate={currentCandidate}
           addNew={addNew}
+          changeInput={changeInput}
         />
         <CandidateNote
         showLoading={showLoading}
