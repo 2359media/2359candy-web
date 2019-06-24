@@ -1,111 +1,89 @@
-.candidate-container{
+.candidate-container {
   display: flex;
   min-height: calc(100vh - 68px);
+}
 
-}
-.header{
-  height: 68px;
-  border-bottom: solid 1px #e4e4e4;
-  display: flex;
-}
-.logo-name{
-  font-size: 28px;
-  font-weight: 300;
-  line-height: 1.14;
-  color: #2e384d;
-  padding: 15px 0 0 15px;
-}
-.setting-icon{
-  padding: 20px 15px 0 0;
-  margin-left: auto;
-}
-.setting{
-  cursor: pointer;
-}
-.filter{
+.filter {
   width: 24%;
   padding: 0 20px;
   height: calc(100vh - 68px);
   overflow: scroll;
- 
 }
-.filter-text{
+.filter-text {
   padding: 20px 0 0 0;
   color: #bfc5d2;
   font-size: 12px;
   font-weight: 500;
 }
-.filter-select{
+.filter-select {
   margin-top: 20px;
-  background-color:transparent;
+  background-color: transparent;
   border: none;
   border-bottom: solid 1px #e4e4e4;
   width: 300px;
   outline: none;
   border-radius: 0;
-  color:#2e384d;
+  color: #2e384d;
   font-size: 15px;
   box-shadow: none;
-
 }
-.filter-name{
+.filter-name {
   font-size: 15px;
   border: 0;
   outline: 0;
   background: transparent;
-  padding:5px 0;
+  padding: 5px 0;
   color: #b9c1ce;
   width: 295px;
   margin: 20px 7px;
   border-bottom: solid 1px #e4e4e4;
 }
-.candidate-wrapper{
+.candidate-wrapper {
   border-top: solid 1px #e4e4e4;
   padding: 50px 0;
   margin-top: 30px;
 }
-.candidate-title{
+.candidate-title {
   display: flex;
 }
-.candidate-item{
+.candidate-item {
   margin: 25px 0;
   cursor: pointer;
- 
 }
-.candidate-item-active{
+.candidate-item-active {
   background: #f4f6fc;
   padding: 20px;
   margin: 0 -20px;
   border-left: solid 2px #2f5afc;
   border-bottom: solid 1px #e4e4e4;
 }
-.candidate-name{
+.candidate-name {
   font-size: 15px;
   color: #2e384d;
   font-weight: bold;
   margin: 6px 0;
 }
-.candidate-job{
+.candidate-job {
   font-size: 15px;
   color: #2e384d;
 }
-.candidate-list{
+.candidate-list {
   width: 38%;
   background: #f4f6fc;
   overflow: scroll;
   height: calc(100vh - 68px);
-
 }
-.action-wrapper,.profile-wrapper{
-  padding: 10px 50px ;
+.action-wrapper,
+.profile-wrapper {
+  padding: 10px 50px;
 }
-.basic-text{
+.basic-text {
   font-size: 20px;
   font-weight: 300;
   line-height: 1.6;
   color: #2e384d;
 }
-.blue-btn{
+.blue-btn {
   width: 210px;
   height: 32px;
   background: #2f5afc;
@@ -118,10 +96,10 @@
   outline: none;
   cursor: pointer;
 }
-.update-btn{
+.update-btn {
   margin: 0 0 10px auto;
 }
-.yellow-btn{
+.yellow-btn {
   width: 210px;
   height: 32px;
   background: #f4ac33;
@@ -134,20 +112,20 @@
   outline: none;
   cursor: pointer;
 }
-.rectangle-wrapper{
+.rectangle-wrapper {
   width: 430px;
   /* height: 295px; */
   background: white;
   margin: 20px 0;
 }
-.title-text-grey{
+.title-text-grey {
   padding: 35px 30px 10px 30px;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 1.1px;
   color: #bfc5d2;
 }
-.item-text{
+.item-text {
   border: 0;
   outline: 0;
   background: transparent;
@@ -158,17 +136,16 @@
   color: #2e384d;
   margin: 0 30px;
   border-bottom: solid 1px #e4e4e4;
-  
 }
-.application-rectangle{
+.application-rectangle {
   width: 430px;
   height: 600px;
   background: white;
   margin: 20px 0;
 }
-.application-filter-select{
+.application-filter-select {
   margin-top: 20px;
-  background-color:transparent;
+  background-color: transparent;
   border: none;
   border-bottom: solid 1px #e4e4e4;
   width: 370px;
@@ -182,17 +159,17 @@
   margin: 0 30px;
 }
 
-.candidate-note{
+.candidate-note {
   width: 38%;
   background: #f4f6fc;
   height: calc(100vh - 68px);
   overflow: scroll;
 }
-.candidate-note-title{
+.candidate-note-title {
   padding: 10px 50px;
   display: flex;
 }
-.plus-btn{
+.plus-btn {
   background: #2f5afc;
   border-radius: 45%;
   border: none;
@@ -201,52 +178,51 @@
   height: 25px;
   font-size: 16px;
   cursor: pointer;
-  margin:4px 0 0 auto;
+  margin: 4px 0 0 auto;
   outline: none;
 }
-.new-note-wrapper{
+.new-note-wrapper {
   min-height: 178px;
   background: white;
   margin: 10px 50px;
 }
-.note-wrapper-loading{
-  background: #f4f6fc
+.note-wrapper-loading {
+  background: #f4f6fc;
 }
-.loading-note{
+.loading-note {
   width: 100px;
   height: 100px;
   margin: 50px 0 0 200px;
 }
-.new-note-title-text{
+.new-note-title-text {
   font-size: 15px;
   font-weight: 500;
   color: #b9c1ce;
   padding: 14px 0 5px 0;
-  margin:0 28px;
+  margin: 0 28px;
   border-bottom: solid 1px #e4e4e4;
 }
-.new-note-form{
+.new-note-form {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin:0 28px;
+  margin: 0 28px;
 }
-.new-note-input{
+.new-note-input {
   font-size: 15px;
   border: 0;
   outline: 0;
   background: transparent;
-  padding:5px 0;
+  padding: 5px 0;
   color: #2e384d;
   width: 100%;
   min-height: 80px;
-  
 }
 ::placeholder {
-  color:#b9c1ce;
+  color: #b9c1ce;
 }
-.new-note-title-input{
+.new-note-title-input {
   font-size: 15px;
   border: 0;
   outline: 0;
@@ -256,13 +232,13 @@
   font-weight: 500;
   color: #2e384d;
   padding: 14px 0 5px 0;
-  margin:0 28px;
+  margin: 0 28px;
   width: 100%;
 }
 ::placeholder {
-  color:#b9c1ce;
+  color: #b9c1ce;
 }
-.btn-submit{
+.btn-submit {
   margin: 15px 0 15px auto;
   width: 120px;
   height: 30px;
@@ -274,14 +250,13 @@
   font-weight: bold;
   cursor: pointer;
   outline: none;
-
 }
-.note-wrapper{
+.note-wrapper {
   min-height: 220px;
   background: white;
   margin: 30px 50px;
 }
-.note-title{
+.note-title {
   font-size: 15px;
   line-height: 1.47;
   color: #2e384d;
@@ -289,28 +264,28 @@
   margin: 0 30px;
   padding-top: 20px;
 }
-.note-content{
+.note-content {
   font-size: 15px;
   line-height: 1.47;
   color: #2e384d;
   margin: 10px 30px;
   white-space: pre-line;
 }
-.author{
+.author {
   display: flex;
   margin: 100px 20px 20px 20px;
   justify-content: space-between;
 }
-.author-name{
+.author-name {
   font-size: 15px;
   color: #2e384d;
 }
-.time{
+.time {
   margin-left: auto;
   font-size: 15px;
   color: #2e384d;
 }
-.create-btn{
+.create-btn {
   width: 120px;
   height: 30px;
   background: #2f5afc;
@@ -325,54 +300,87 @@
   float: right;
 }
 
-  .btn {
-    position: static !important;
-    right: 0;
-  }
-  .modal-custom {
-    position: absolute;
-    top: 25%;
-    left: 50%;
-    right: auto;
-    bottom: auto;
-    margin-right: -50%;
-    transform: translate(-50%, -50%);
-    border: 1px solid rgb(204, 204, 204);
-    padding: 20px;
-    background: rgb(255, 255, 255);
-    height: 80px;
-    width: 430px;
-    outline: none;
-  }
-  .btn-wrapper{
-    display: flex;
-    justify-content: space-around;
-  
-  }
-  .btn-modal {
-    width: 180px;
-    height: 30px;
-    background: #2f5afc;
-    color: white;
-    border: none;
-    border-radius: 15px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    outline: none;
-    margin: 30px 0 10px 0;
-  }
-  .loading{
-    width: 100px;
-    height: 100px;
-    margin: 50px 0 0 110px;
-  }
-  .resume-icon{
-    cursor: pointer;
-  }
-  .mg-bt{
-    margin-bottom: 50px;
-  }
-  .application-title-wrapper{
-    display:flex;
-  }
+.btn {
+  position: static !important;
+  right: 0;
+}
+.modal-custom {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgb(204, 204, 204);
+  padding: 20px;
+  background: rgb(255, 255, 255);
+  height: 80px;
+  width: 430px;
+  outline: none;
+}
+.btn-wrapper {
+  display: flex;
+  justify-content: space-around;
+}
+.btn-modal {
+  width: 180px;
+  height: 30px;
+  background: #2f5afc;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  margin: 30px 0 10px 0;
+}
+.loading {
+  width: 100px;
+  height: 100px;
+  margin: 50px 0 0 110px;
+}
+.resume-icon {
+  cursor: pointer;
+}
+.mg-bt {
+  margin-bottom: 50px;
+}
+.application-title-wrapper {
+  display: flex;
+}
+.job-posting-screen {
+  background: #f4f6fc;
+  min-height: calc(100vh - 68px);
+}
+.job-posting-wrapper {
+  width: 50%;
+  margin: auto;
+  padding: 30px 0;
+}
+.job-posting-title{
+  display: flex;
+}
+.job-posting-title-light{
+  padding: 0 20px;
+  display: flex;
+}
+.jd-url-title{
+  margin-left: 250px;
+}
+.job-item{
+  background: white;
+  margin: 20px 0;
+  display: flex;
+  padding: 20px;
+}
+.job-title{
+ width: 50%;
+ border: 0;
+ outline: 0;
+ background: transparent;
+ font-size: 15px;
+ line-height: 1.47;
+ color: #2e384d;
+}

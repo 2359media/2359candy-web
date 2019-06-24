@@ -5,16 +5,29 @@ import history from '../history';
 import { withRouter } from 'react-router-dom';
 import loading from '../CandidateScreen/assets/loading.gif';
 import moment from 'moment';
+
+function getQueryStr(queries){
+  let queryStr = '';
+  for (var key in queries) {
+    if (queries.key !== '') {
+      queryStr += `${key}=${queries[key]}&`;   
+    }
+  }
+  return queryStr;
+}
+
 function FilterCandidate(props) {
   const [candidates, setCandidates] = useState(null);
   const [jobPost, setJobPost] = useState([]);
   const [arrId, setArrId] = useState([]);
   const [candidateActive, setCandidateActive] = useState(false);
-  const [queries, setQueries] = useState({ status: 'Inbox' });
   const urlJobPosting = 'https://candy-243011.firebaseapp.com/api/v1/postings/';
   const urlCandidate =
     'https://candy-243011.firebaseapp.com/api/v1/candidates/';
   const id = props.match.params.id;
+
+
+
   useEffect(() => {
     async function fetchData() {
       const dataJob = await request(urlJobPosting);
@@ -25,9 +38,11 @@ function FilterCandidate(props) {
     fetchData();
   }, []);
   useEffect(() => {
+    const queryStr = getQueryStr(props.queries)
+    history.push(`/dashboard/?${queryStr}`);
     props.setShowLoading(true);
-    async function fetchData(query) {
-      const dataCandi = await request(`${urlCandidate}?${query}`);
+    async function fetchData() {
+      const dataCandi = await request(`${urlCandidate}?${queryStr}`);
       const arrayCandi = [];
       const arrId = [];
       dataCandi && dataCandi.map(item => arrayCandi.push(item));
@@ -36,41 +51,23 @@ function FilterCandidate(props) {
       setArrId(arrId);
       props.setShowLoading(false);
     }
-    let query = '';
-    for (var key in queries) {
-      if (queries.key !== '') {
-        query += `${key}=${queries[key]}&`;
-      }
-    }
     if (props.newCandidate) {
       setCandidateActive(props.newCandidate);
       props.setAddNew(false);
-      history.push(`/dashboard/${props.newCandidate}`);
+      history.push(`/dashboard/${props.newCandidate}/?${queryStr}`);
       setCandidates([...candidates, props.candidate]);
     }
-    //  setTimeout(() => {
-    //   setShowLoading(false);
-    // }, 3000);
-    // if(props.currentCandidate){
-    //   const currentId = candidates.findIndex(candidate=> candidate.id === props.currentCandidate.id)
-    //   setCandidates([
-    //     ...candidates.slice(0,currentId),
-    //     props.currentCandidate,
-    //     ...candidates.slice(currentId+1)
-    //   ])
       setCandidateActive(id)
-    //   setAddNew(false)
-    // }
-    // setCandidateActive(id);
     props.setSubmitted(false)
-    fetchData(query);
-  }, [queries, props.submitted]);
+    fetchData();
+  }, [props.queries, props.submitted]);
 
   function handleCandidate(id) {
+    const queryStr = getQueryStr(props.queries)
     if (props.changeInput) {
       props.setModalIsOpen(true);
     } else {
-      history.push(`/dashboard/${id}`);
+      history.push(`/dashboard/${id}/?${queryStr}`);
       const currentCandidate = arrId.find(idCandi => idCandi === id);
       setCandidateActive(currentCandidate);
       props.setAddNew(false);
@@ -94,7 +91,7 @@ function FilterCandidate(props) {
       props.setModalIsOpen(true);
     } else {
       const value = e.target.value;
-      setQueries(prevState => ({ ...prevState, [name]: value }));
+      props.setQueries(prevState => ({ ...prevState, [name]: value }));
       history.push(`/dashboard`);
     }
   }
@@ -109,17 +106,15 @@ function FilterCandidate(props) {
     t.setSeconds(secs);
     return t;
   }
-
   return (
     <div className="filter">
       <div className="filter-text">FILTER BY</div>
       <select
         className="filter-select"
         onChange={value => onChangeQueries(value, 'status')}
+        value={props.queries.status}
       >
-        <option className="option-text" defaultValue="Inbox">
-          Inbox
-        </option>
+        <option value="Inbox">Inbox </option>
         <option value="Screening">For Screening </option>
         <option value="Shortlisted">Shortlisted</option>
         <option value="Offered">Offered</option>
@@ -128,6 +123,7 @@ function FilterCandidate(props) {
       <select
         className="filter-select"
         onChange={value => onChangeQueries(value, 'posting')}
+        value={props.queries.posting}
       >
         <option defaultValue="" disabled selected>
           Job Posting
@@ -140,6 +136,7 @@ function FilterCandidate(props) {
       <select
         className="filter-select"
         onChange={value => onChangeQueries(value, 'office')}
+        value={props.queries.office}
       >
         <option defaultValue="" disabled selected>
           Office
@@ -159,7 +156,7 @@ function FilterCandidate(props) {
             <div className="basic-text">
               {candidates ? candidates.length : '0'} Candidates
             </div>
-            {queries.status === 'Inbox' && (
+            {props.queries.status === 'Inbox' && (
               <button onClick={() => addCandidate()} className="plus-btn">
                 +
               </button>

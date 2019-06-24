@@ -1,9 +1,14 @@
-async function request(url,id) {
-  const res = await fetch(url,{
-    method:'GET',
+async function updateJob(jobPost,id) {
+  const res = await fetch(`https://candy-243011.firebaseapp.com/api/v1/postings/${id}`,{
+    method:'PUT',
     headers:{
+      'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization' : `Bearer ${localStorage.getItem('idToken')}`
-    }
+    },
+    body: new URLSearchParams({
+     jobTitle: jobPost.jobTitle,
+     jdUrl: jobPost.jdUrl
+    })
   })
     if(res.status === 403){
      const response = await fetch(
@@ -22,11 +27,8 @@ async function request(url,id) {
           const data = await response.json();
             localStorage.setItem('idToken', data.id_token)
             localStorage.setItem('refreshToken',data.refresh_token)
-            return request(url,id)       }
+            return updateJob(jobPost,id)       }
         }
-    else if (res.status === 200){
-      return res.json()
-    } 
   
 }
-export default request
+export default updateJob;

@@ -1,0 +1,41 @@
+.header{
+  height: 68px;
+  border-bottom: solid 1px #e4e4e4;
+  display: flex;
+}
+.logo-name{
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1.14;
+  color: #2e384d;
+  padding: 15px 0 0 15px;
+}
+.setting{
+  cursor: pointer;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin: 10px 0 0 auto;
+  padding: 10px 15px 0 0;
+}
+.dropdown-content {
+  position: absolute;
+  background-color: white;
+  min-width: 220px;
+  overflow: auto;
+  /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
+  z-index: 1;
+  cursor: pointer;
+  left:-180px;
+  margin-top: 20px;
+}
+.item-menu {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  border-bottom: solid 3px #f4f6fc;
+}
+.item-menu:hover {background-color: #f8f8f9}
+.hide {display: none}

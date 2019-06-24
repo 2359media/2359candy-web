@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Login.css';
 import history from '../history';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
+  useEffect(() => {
+    if (localStorage.getItem('idToken')) {
+      history.push('/dashboard');
+    }
+  }, [])
 
   function onChangeEmail(e) {
     setEmail(e.target.value);

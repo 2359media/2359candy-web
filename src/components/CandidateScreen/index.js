@@ -3,26 +3,34 @@ import FilterCandidate from '../FilterCandidate';
 import CandidateList from '../CandidateList';
 import CandidateNote from '../CandidateNote';
 import './Candidate.css';
-import setting_icon from './assets/setting-icon.png';
+import Header from '../Header';
+
+function parseUrl() {
+  var search = window.location.search.substring(1);
+ if(search){
+  const urlParams = new URLSearchParams(search);
+  const params = Object.fromEntries(urlParams.entries());
+   return params
+ }
+ else return {status: "Inbox"}
+}
 
 function CandidateScreen() {
   const [candidate, setCandidate] = useState(null);
   const [changeInput, setChangeInput] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [submitted,setSubmitted] = useState(false);
-  const [newCandidate,setNewCandidate] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const [newCandidate, setNewCandidate] = useState('');
   const [showLoading, setShowLoading] = useState(true);
-  const [currentCandidate,setCurrentCandidate] = useState(null);
+  const [currentCandidate, setCurrentCandidate] = useState(null);
   const [addNew, setAddNew] = useState(false);
+  const [queries, setQueries] = useState(parseUrl());
+
+  
 
   return (
     <div className="candidate-screen">
-      <div className="header">
-        <div className="logo-name">2359 Candidate Portal</div>
-        <div className="setting-icon">
-          <img src={setting_icon} className="setting" alt="logo" />
-        </div>
-      </div>
+      <Header />
       <div className="candidate-container">
         <FilterCandidate
           changeInput={changeInput}
@@ -37,6 +45,8 @@ function CandidateScreen() {
           setSubmitted={setSubmitted}
           setAddNew={setAddNew}
           addNew={addNew}
+          setQueries={setQueries}
+          queries={queries}
         />
         <CandidateList
           candidate={candidate}
@@ -51,10 +61,7 @@ function CandidateScreen() {
           addNew={addNew}
           changeInput={changeInput}
         />
-        <CandidateNote
-        showLoading={showLoading}
-        addNew={addNew}
-         />
+        <CandidateNote showLoading={showLoading} addNew={addNew} />
       </div>
     </div>
   );
